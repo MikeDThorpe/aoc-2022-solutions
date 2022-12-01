@@ -2,7 +2,6 @@ package com.adventofcode.solutions;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -14,7 +13,7 @@ public class Main {
             "/Users/michaelthorpe/Documents/Training/advent-of-code/2022-solutions/src/main/resources/input.txt");
     Scanner sc = new Scanner(input);
 
-    var calorieCounter = new CalorieCounter(0,  new ArrayList<>());
+    var calorieCounter = new CalorieCounter(0);
 
     while (sc.hasNextLine()) {
       String line = sc.nextLine();

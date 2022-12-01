@@ -2,15 +2,14 @@ package com.adventofcode.solutions;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 public class CalorieCounter {
     private Integer calorieCount;
     private ArrayList<Integer> calorieCountList;
 
-    public CalorieCounter(Integer calorieCount, ArrayList<Integer> calorieCountList) {
+    public CalorieCounter(Integer calorieCount) {
         this.calorieCount = calorieCount;
-        this.calorieCountList = calorieCountList;
+        this.calorieCountList = new ArrayList<>();
     }
 
     public void setCalorieCount(Integer calorieCount) {
