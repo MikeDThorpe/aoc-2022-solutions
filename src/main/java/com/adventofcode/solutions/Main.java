@@ -17,13 +17,11 @@ public class Main {
 
     while (sc.hasNextLine()) {
       String line = sc.nextLine();
-      if (!Objects.equals(line, "")) {
+      if (!Objects.equals(line, ""))
         calorieCounter.incrementCalorieCount(Integer.parseInt(line));
-      } else {
+      else
         calorieCounter.logCalorieCountAndReset();
-      }
     }
-
     System.out.println(calorieCounter.calculateThreeHighestCalories());
   }
 }
