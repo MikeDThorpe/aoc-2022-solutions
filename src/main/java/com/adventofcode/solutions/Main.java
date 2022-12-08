@@ -41,21 +41,14 @@ public class Main {
                 }
 
                 var tree = new Tree();
-
                 tree.setTreeHeight(Integer.parseInt(String.valueOf(treeRow.charAt(j))));
 
                 List<Integer> treesLeft = new ArrayList<>();
                 List<Integer> treesRight = new ArrayList<>();
                 for(int k = 0 ; k < treeRow.length(); k++) {
-                    if(k < j) {
-                        treesLeft.add(0,
-                          Integer.parseInt(String.valueOf(treeRow.charAt(k)))
-                        );
-                    } else if (k > j) {
-                        treesRight.add(
-                                Integer.parseInt(String.valueOf(treeRow.charAt(k)))
-                        );
-                    }
+                    final int tr = Integer.parseInt(String.valueOf(treeRow.charAt(k)));
+                    if(k < j) treesLeft.add(0, tr);
+                    else if (k > j) treesRight.add(tr);
                 }
 
                 List<Integer> treesAbove = new ArrayList<>();
@@ -63,27 +56,13 @@ public class Main {
                 for(int l = 0; l < treeRows.size(); l++) {
                     String treeRow2 = treeRows.get(l);
                     for(int m = 0; m < treeRow2.length(); m++) {
-                        // j is tree index
-                        // i is tree row index
-                        // ---
-                        // m is tree index
-                        // l is tree row index
-
                         if(l == i && m == j) continue;
-
                         if(m == j) {
-                            if(l < i) {
-                                treesAbove.add(0,
-                                        Integer.parseInt(String.valueOf(treeRow2.charAt(m)))
-                                );
-                            } else {
-                                treesBelow.add(
-                                        Integer.parseInt(String.valueOf(treeRow2.charAt(m)))
-                                );
-                            }
+                            final int tr = Integer.parseInt(String.valueOf(treeRow2.charAt(m)));
+                            if(l < i) treesAbove.add(0, tr);
+                            else treesBelow.add(tr);
                         }
                     }
-
                 }
 
                 tree.setTreesAbove(treesAbove);
