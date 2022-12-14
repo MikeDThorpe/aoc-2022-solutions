@@ -49,9 +49,7 @@ public class Main {
                 stackToMoveFrom.remove(stackToMoveFrom.size() - 1);
             }
 
-            for(int i = 0; i < cratesToMove.size(); i++) {
-                stackToMoveTo.add(cratesToMove.get(i));
-            }
+            stackToMoveTo.addAll(cratesToMove);
         }
 
         String res = crates.stream()
