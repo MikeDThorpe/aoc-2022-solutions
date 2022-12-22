@@ -3,7 +3,6 @@ package com.adventofcode.solutions;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -34,57 +33,46 @@ public class Main {
             }
         }
 
-        for(int i = 0; i < 20; i++) {
+        for(int i = 1; i <= 20; i++) {
             for(Monkey monkey : monkeys) {
-                // loop over monkey items and perform operation
-                ArrayList<Integer> reCalculatedItems = new ArrayList<>(monkey.getItems()
-                        .stream()
-                        .map(item -> {
-                            return monkey.getOperation().get("operation") == "+" ?
-                                    monkey.performAddition(item) : monkey.performMultiplication(item);
-                        })
-                        .map(item -> item / 3)
-                        .toList());
 
-                List<Integer> indexOfItemsToRemove = new ArrayList<>();
+                if (monkey.getItems().isEmpty()) continue;
 
-                // perform test
-                for(int j = 0; j < reCalculatedItems.size(); j++) {
-                    monkey.incrementInspectionCount();
-                    Integer item = reCalculatedItems.get(j);
-                    Monkey monkeyToThrowTo;
-                    // throw to new monkey based on outcome of test
-                    if(monkey.passesTest(item)) {
-                        // throw to monkey if true
-                        monkeyToThrowTo = monkeys.get(monkey.getIfTrue());
-                    } else {
-                        // throw to monkey if false
-                        monkeyToThrowTo = monkeys.get(monkey.getIfFalse());
-                    }
-                    // add item to monkeyToThrowTo
-                    monkeyToThrowTo.addItem(item);
-                    // remove item from current monkey
-                    indexOfItemsToRemove.add(j);
-                }
-                // remove items
-                indexOfItemsToRemove.forEach(reCalculatedItems::remove);
-                monkey.setItems(new ArrayList<>(reCalculatedItems));
+                monkey.getItems()
+                        .forEach(item -> {
+                            item = monkey.inspectAndRecalculateItem(item);
+                            Monkey monkeyToThrowTo = monkey.passesTest(item) ? monkeys.get(monkey.getIfTrue()) : monkeys.get(monkey.getIfFalse());
+                            monkeyToThrowTo.addItem(item);
+                        });
+                monkey.clearItems();
             }
         }
 
-        monkeys.forEach(monkey -> System.out.println(monkey.getInspectionCount()));
+        monkeys.forEach(
+            monkey -> {
+              System.out.println(
+                  "Monkey "
+                      + monkey.getId()
+                      + " inspected items "
+                      + monkey.getInspectionCount()
+                      + " times");
+              System.out.println(monkey.getItems());
+            });
     }
 
-    public static List<Integer> createItemList(String str) { // Starting items: 79, 98
+    public static Deque<Long> createItemList(String str) { // Starting items: 79, 98
         ArrayList<String> itemList = new ArrayList<>(Arrays.asList(
                 str
                 .replace("Starting items: ", "")
                 .trim()
                 .split(",")));
-        return new ArrayList<>(itemList.stream()
+
+
+        return new ArrayDeque<>(itemList.stream()
                 .map(String::trim)
-                .map(Integer::parseInt)
-                .toList());
+                .map(Long::parseLong)
+                .toList()) {
+        };
     }
 
     public static Map<String, String> createOperation(String str) {

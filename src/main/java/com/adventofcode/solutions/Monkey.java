@@ -1,34 +1,17 @@
 package com.adventofcode.solutions;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Monkey {
     private Integer id;
-    private List<Integer> items;
-    private Map<String, String> operation; // new  = old + 3
-    private Integer divisibleBy; // divisible by 17
+    private Deque<Long> items;
+    private Map<String, String> operation;
+    private Integer divisibleBy;
     private Integer ifTrue;
     private Integer ifFalse;
     private Integer inspectionCount;
 
     public Monkey() {
-    }
-
-  public Monkey(
-      Integer id,
-      List<Integer> items,
-      Map<String, String> operation,
-      Integer divisibleBy,
-      Integer ifTrue,
-      Integer ifFalse) {
-        this.id = id;
-        this.items = items;
-        this.operation = operation;
-        this.divisibleBy = divisibleBy;
-        this.ifTrue = ifTrue;
-        this.ifFalse = ifFalse;
     }
 
     public Integer getId() {
@@ -39,21 +22,12 @@ public class Monkey {
         this.id = id;
     }
 
-    public List<Integer> getItems() {
+    public Deque<Long> getItems() {
         return items;
     }
 
-  public void setItems(List<Integer> items) {
+    public void setItems(Deque<Long> items) {
         this.items = items;
-    }
-
-    public void addItem(Integer item) {
-        this.items.add(item);
-    }
-
-    public void removeItem(int index) {
-        System.out.println(items);
-        this.items.remove(index);
     }
 
     public Map<String, String> getOperation() {
@@ -62,10 +36,6 @@ public class Monkey {
 
     public void setOperation(Map<String, String> operation) {
         this.operation = operation;
-    }
-
-    public Integer getDivisibleBy() {
-        return divisibleBy;
     }
 
     public void setDivisibleBy(Integer divisibleBy) {
@@ -96,27 +66,42 @@ public class Monkey {
         this.inspectionCount = inspectionCount;
     }
 
-    public void incrementInspectionCount() {
-        this.inspectionCount += 1;
-    }
-
-    public Integer performMultiplication(Integer item) {
+    public Long performMultiplication(Long item) {
         String v = this.operation.get("right");
         if(v.equals("old")) {
             return item * item;
         }
-        return item * Integer.parseInt(v);
+        return item * Long.parseLong(v);
     }
 
-    public Integer performAddition(Integer item) {
+    public Long performAddition(Long item) {
         String v = this.operation.get("right");
         if(v.equals("old")) {
             return item + item;
         }
-        return item + Integer.parseInt(v);
+        return item + Long.parseLong(v);
     }
 
-    public boolean passesTest(Integer i) {
+    public boolean passesTest(Long i) {
         return i % this.divisibleBy == 0;
     }
+
+    public Long inspectAndRecalculateItem(Long item) {
+         this.setInspectionCount(this.inspectionCount + 1);
+            if(this.getOperation().get("operation").equals("+")) {
+                item = performAddition(item);
+            } else {
+                item = performMultiplication(item);
+            }
+            return Math.floorDiv(item, 3);
+    }
+
+    public void clearItems() {
+        this.items.clear();
+    }
+
+    public void addItem(Long item) {
+        this.items.addLast(item);
+    }
+
 }
