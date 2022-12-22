@@ -2,6 +2,7 @@ package com.adventofcode.solutions;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.math.BigInteger;
 import java.util.*;
 
 public class Main {
@@ -33,7 +34,7 @@ public class Main {
             }
         }
 
-        for(int i = 1; i <= 20; i++) {
+        for(int i = 1; i <= 10000; i++) {
             for(Monkey monkey : monkeys) {
 
                 if (monkey.getItems().isEmpty()) continue;
@@ -42,22 +43,20 @@ public class Main {
                         .forEach(item -> {
                             item = monkey.inspectAndRecalculateItem(item);
                             Monkey monkeyToThrowTo = monkey.passesTest(item) ? monkeys.get(monkey.getIfTrue()) : monkeys.get(monkey.getIfFalse());
+                            item %= 9699690;
                             monkeyToThrowTo.addItem(item);
                         });
                 monkey.clearItems();
             }
         }
 
-        monkeys.forEach(
-            monkey -> {
-              System.out.println(
-                  "Monkey "
-                      + monkey.getId()
-                      + " inspected items "
-                      + monkey.getInspectionCount()
-                      + " times");
-              System.out.println(monkey.getItems());
-            });
+        List<Integer>monkeyInspectionCounts = monkeys
+                .stream()
+                .map(Monkey::getInspectionCount)
+                .sorted(Comparator.reverseOrder())
+                .toList();
+
+        System.out.println(BigInteger.valueOf(monkeyInspectionCounts.get(0)).multiply(BigInteger.valueOf(monkeyInspectionCounts.get(1))));
     }
 
     public static Deque<Long> createItemList(String str) { // Starting items: 79, 98
@@ -66,7 +65,6 @@ public class Main {
                 .replace("Starting items: ", "")
                 .trim()
                 .split(",")));
-
 
         return new ArrayDeque<>(itemList.stream()
                 .map(String::trim)

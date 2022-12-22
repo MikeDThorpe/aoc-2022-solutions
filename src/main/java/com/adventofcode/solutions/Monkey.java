@@ -93,7 +93,7 @@ public class Monkey {
             } else {
                 item = performMultiplication(item);
             }
-            return Math.floorDiv(item, 3);
+            return item;
     }
 
     public void clearItems() {
