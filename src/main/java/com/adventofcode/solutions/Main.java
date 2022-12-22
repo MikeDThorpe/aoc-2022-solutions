@@ -34,6 +34,13 @@ public class Main {
             }
         }
 
+        Integer part2ModValue = monkeys
+                .stream()
+                .map(Monkey::getDivisibleBy)
+                .reduce(1, (a, b) -> a * b);
+
+        System.out.println(part2ModValue);
+
         for(int i = 1; i <= 10000; i++) {
             for(Monkey monkey : monkeys) {
 
@@ -43,7 +50,7 @@ public class Main {
                         .forEach(item -> {
                             item = monkey.inspectAndRecalculateItem(item);
                             Monkey monkeyToThrowTo = monkey.passesTest(item) ? monkeys.get(monkey.getIfTrue()) : monkeys.get(monkey.getIfFalse());
-                            item %= 9699690;
+                            item %= part2ModValue;
                             monkeyToThrowTo.addItem(item);
                         });
                 monkey.clearItems();

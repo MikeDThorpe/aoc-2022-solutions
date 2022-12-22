@@ -50,6 +50,10 @@ public class Monkey {
         this.ifTrue = ifTrue;
     }
 
+    public Integer getDivisibleBy() {
+        return divisibleBy;
+    }
+
     public Integer getIfFalse() {
         return ifFalse;
     }
